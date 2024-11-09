@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://b8orur4n03sh"]
+
+[ext_resource type="Script" path="res://Script/Enemys/enemy_2.gd" id="1_5wxgl"]
+[ext_resource type="Texture2D" uid="uid://dwqsui57bdv7s" path="res://Assets/Character/Fullmain.png" id="2_8e0e6"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_12kwj"]
+size = Vector2(40, 24)
+
+[node name="Enemy2" type="CharacterBody2D"]
+script = ExtResource("1_5wxgl")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, -4)
+shape = SubResource("RectangleShape2D_12kwj")
+
+[node name="Polygon2D" type="Polygon2D" parent="."]
+scale = Vector2(4, 4)
+color = Color(1, 0, 0.00392157, 1)
+polygon = PackedVector2Array(-5, 2, 5, 2, 3, -4, 2, -4, 1, -2, -1, -2, -2, -4, -3, -4)
+
+[node name="Fullmain" type="Sprite2D" parent="."]
+position = Vector2(-144, -96)
+texture = ExtResource("2_8e0e6")
+
+[node name="LongGroundDetector" type="RayCast2D" parent="."]
+position = Vector2(139, 0)
+
+[node name="CloseGroundDetector2" type="RayCast2D" parent="."]
+position = Vector2(24, 0)
+collision_mask = 4
