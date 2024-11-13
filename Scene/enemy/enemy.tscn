@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://vjgitkpi38qs"]
+[gd_scene load_steps=29 format=3 uid="uid://vjgitkpi38qs"]
 
 [ext_resource type="Script" path="res://Script/Enemys/enemy.gd" id="1_7rliy"]
 [ext_resource type="Texture2D" uid="uid://nvmw4mvl4dq1" path="res://Assets/Character/attacking.png" id="1_85nk0"]
@@ -144,6 +144,34 @@ animations = [{
 [sub_resource type="CircleShape2D" id="CircleShape2D_457a6"]
 radius = 40.3113
 
+[sub_resource type="Gradient" id="Gradient_puyrd"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.675556)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_pw0am"]
+gradient = SubResource("Gradient_puyrd")
+width = 256
+height = 256
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_lpnlg"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.00444444, 0.675556)
+colors = PackedColorArray(1, 0, 0.329412, 0.588235, 1, 1, 0.443137, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_nkq71"]
+gradient = SubResource("Gradient_lpnlg")
+width = 128
+height = 128
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
+
 [node name="Enemy" type="CharacterBody2D"]
 z_index = 1
 script = ExtResource("1_7rliy")
@@ -160,6 +188,16 @@ collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="DemageArea"]
 shape = SubResource("CircleShape2D_457a6")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+scale = Vector2(1.25, 1.125)
+color = Color(1, 0.518123, 0.45217, 1)
+texture = SubResource("GradientTexture2D_pw0am")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.313726)
+show_behind_parent = true
+texture = SubResource("GradientTexture2D_nkq71")
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="frame_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_frame_changed"]

@@ -4,16 +4,18 @@ extends CharacterBody2D
 const SPEED = 200.0
 const JUMP_VELOCITY = -400.0
 
-var hud:CanvasLayer
+var hud:HUD
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = 1000
 
-var healt = 5
+var healt := 5
 
 
 func _ready():
 	hud = get_tree().get_nodes_in_group("HUD")[0]
+	hud.call_deferred("set_healt_value", healt)
+	print(healt)
 	pass
 
 

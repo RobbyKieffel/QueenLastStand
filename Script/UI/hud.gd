@@ -1,3 +1,4 @@
+class_name HUD
 extends CanvasLayer
 
 var coin = 0
@@ -16,6 +17,3 @@ func set_healt_value(value:int):
 
 func flash():
 	$AnimationPlayer.play("Flash")
-
-func hallo():
-	print("hallo")

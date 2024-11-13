@@ -1,4 +1,4 @@
-[gd_scene load_steps=30 format=3 uid="uid://dnb87f8bjsirj"]
+[gd_scene load_steps=34 format=3 uid="uid://dnb87f8bjsirj"]
 
 [ext_resource type="Script" path="res://Script/Players/player.gd" id="1_6vja8"]
 [ext_resource type="Texture2D" uid="uid://dwqsui57bdv7s" path="res://Assets/Character/Fullmain.png" id="1_rtx1v"]
@@ -185,6 +185,34 @@ scale_max = 8.0
 scale_curve = SubResource("CurveTexture_p8xy8")
 color_ramp = SubResource("GradientTexture1D_tm07p")
 
+[sub_resource type="Gradient" id="Gradient_ic22x"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.675556)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_jupj6"]
+gradient = SubResource("Gradient_ic22x")
+width = 256
+height = 256
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_gd4vh"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.00444444, 0.675556)
+colors = PackedColorArray(1, 1, 0.329412, 0.588235, 1, 1, 0.443137, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_7i85a"]
+gradient = SubResource("Gradient_gd4vh")
+width = 256
+height = 256
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
+
 [node name="Player" type="CharacterBody2D" groups=["player"]]
 z_index = 1
 collision_layer = 2
@@ -207,5 +235,14 @@ process_material = SubResource("ParticleProcessMaterial_vk4yf")
 lifetime = 0.15
 one_shot = true
 explosiveness = 0.8
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+scale = Vector2(1.25, 1.125)
+texture = SubResource("GradientTexture2D_jupj6")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.313726)
+show_behind_parent = true
+texture = SubResource("GradientTexture2D_7i85a")
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]

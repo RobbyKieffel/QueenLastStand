@@ -1,0 +1,164 @@
+[gd_scene load_steps=24 format=3 uid="uid://sl361mqoke66"]
+
+[ext_resource type="Script" path="res://Script/Enemys/enemy_slime.gd" id="1_ajn6n"]
+[ext_resource type="Shader" path="res://Script/Shader/SpiteOutline.gdshader" id="2_q3yks"]
+[ext_resource type="Texture2D" uid="uid://cpdv0y8mpnv0s" path="res://Assets/Character/Slime/Individual Sprites/slime-idle-0.png" id="3_dp73b"]
+[ext_resource type="Texture2D" uid="uid://yeydaw5h5c5k" path="res://Assets/Character/Slime/Individual Sprites/slime-idle-1.png" id="4_1180r"]
+[ext_resource type="Texture2D" uid="uid://dckpjtn2301x6" path="res://Assets/Character/Slime/Individual Sprites/slime-idle-2.png" id="5_xuner"]
+[ext_resource type="Texture2D" uid="uid://b5estmrgg0x7g" path="res://Assets/Character/Slime/Individual Sprites/slime-idle-3.png" id="6_the2d"]
+[ext_resource type="Texture2D" uid="uid://crbbsctw630ro" path="res://Assets/Character/Slime/Individual Sprites/slime-move-0.png" id="7_nf8ok"]
+[ext_resource type="Texture2D" uid="uid://b5q4hw7yg8koc" path="res://Assets/Character/Slime/Individual Sprites/slime-move-1.png" id="8_4v6kh"]
+[ext_resource type="Texture2D" uid="uid://cndx6spkhq46f" path="res://Assets/Character/Slime/Individual Sprites/slime-move-2.png" id="9_rvl37"]
+[ext_resource type="Texture2D" uid="uid://bmh1wtrmnyip3" path="res://Assets/Character/Slime/Individual Sprites/slime-move-3.png" id="10_tvr0o"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2thew"]
+shader = ExtResource("2_q3yks")
+shader_parameter/outline_color = null
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_wt3e4"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("3_dp73b")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_1180r")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_xuner")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_the2d")
+}],
+"loop": true,
+"name": &"Idle",
+"speed": 10.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("7_nf8ok")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_4v6kh")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_rvl37")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_tvr0o")
+}],
+"loop": true,
+"name": &"Move",
+"speed": 15.0
+}]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ue2sl"]
+radius = 7.0
+height = 20.0
+
+[sub_resource type="Gradient" id="Gradient_ejqq0"]
+colors = PackedColorArray(0.149167, 0.562588, 0.78279, 1, 0.210795, 0.405594, 0.711683, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_thppi"]
+gradient = SubResource("Gradient_ejqq0")
+
+[sub_resource type="Curve" id="Curve_4d18f"]
+_data = [Vector2(0, 0.692308), 0.0, 0.0, 0, 0, Vector2(1, 0.208791), 0.0, 0.0, 0, 0]
+point_count = 2
+
+[sub_resource type="CurveTexture" id="CurveTexture_jya82"]
+curve = SubResource("Curve_4d18f")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_vjj0u"]
+particle_flag_disable_z = true
+angle_min = 45.0
+angle_max = 45.0
+spread = 20.0
+initial_velocity_min = 150.0
+initial_velocity_max = 150.0
+gravity = Vector3(0, 0, 0)
+scale_min = 10.0
+scale_max = 10.0
+scale_curve = SubResource("CurveTexture_jya82")
+color_ramp = SubResource("GradientTexture1D_thppi")
+hue_variation_min = -2.23517e-08
+hue_variation_max = -2.23517e-08
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uxx7m"]
+radius = 8.0
+height = 22.0
+
+[sub_resource type="Gradient" id="Gradient_vwwsw"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0, 0.675556)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_eouct"]
+gradient = SubResource("Gradient_vwwsw")
+width = 256
+height = 256
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
+
+[sub_resource type="Gradient" id="Gradient_dxn55"]
+interpolation_mode = 2
+offsets = PackedFloat32Array(0.00444444, 0.675556)
+colors = PackedColorArray(1, 0, 0.329412, 0.588235, 1, 1, 0.443137, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_ehw57"]
+gradient = SubResource("Gradient_dxn55")
+width = 128
+height = 128
+use_hdr = true
+fill = 1
+fill_from = Vector2(0.5, 0.5)
+metadata/_snap_enabled = true
+
+[node name="EnemySlime" type="CharacterBody2D" groups=["Enemy"]]
+collision_layer = 2
+collision_mask = 4
+script = ExtResource("1_ajn6n")
+
+[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
+material = SubResource("ShaderMaterial_2thew")
+sprite_frames = SubResource("SpriteFrames_wt3e4")
+animation = &"Move"
+autoplay = "Idle"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 5)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_ue2sl")
+
+[node name="WaitTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="WatterParticle" type="GPUParticles2D" parent="."]
+position = Vector2(0, 7)
+amount = 15
+process_material = SubResource("ParticleProcessMaterial_vjj0u")
+lifetime = 0.2
+
+[node name="DemageArea" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DemageArea"]
+position = Vector2(0, 5)
+rotation = 1.5708
+shape = SubResource("CapsuleShape2D_uxx7m")
+
+[node name="PointLight2D" type="PointLight2D" parent="."]
+scale = Vector2(1.25, 1.125)
+color = Color(1, 0.518123, 0.45217, 1)
+texture = SubResource("GradientTexture2D_eouct")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(1, 1, 1, 0.313726)
+show_behind_parent = true
+texture = SubResource("GradientTexture2D_ehw57")
+
+[connection signal="timeout" from="WaitTimer" to="." method="_on_wait_timer_timeout"]
+[connection signal="body_entered" from="DemageArea" to="." method="_on_demage_area_body_entered"]
