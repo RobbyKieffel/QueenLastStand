@@ -1,9 +1,10 @@
-[gd_scene load_steps=29 format=3 uid="uid://vjgitkpi38qs"]
+[gd_scene load_steps=31 format=3 uid="uid://vjgitkpi38qs"]
 
 [ext_resource type="Script" path="res://Script/Enemys/enemy.gd" id="1_7rliy"]
 [ext_resource type="Texture2D" uid="uid://nvmw4mvl4dq1" path="res://Assets/Character/attacking.png" id="1_85nk0"]
 [ext_resource type="Shader" path="res://Script/Shader/SpiteOutline.gdshader" id="2_dxnwx"]
 [ext_resource type="Texture2D" uid="uid://8g5ar23x2lng" path="res://Assets/Character/idle.png" id="2_rvtm8"]
+[ext_resource type="Texture2D" uid="uid://b8mkuu15e0jrh" path="res://Assets/Emojis_16x16_Free/Emojis_Free39.png" id="5_ce7xg"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4e6io"]
 shader = ExtResource("2_dxnwx")
@@ -172,6 +173,10 @@ fill = 1
 fill_from = Vector2(0.5, 0.5)
 metadata/_snap_enabled = true
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8p5yl"]
+shader = ExtResource("2_dxnwx")
+shader_parameter/outline_color = null
+
 [node name="Enemy" type="CharacterBody2D"]
 z_index = 1
 script = ExtResource("1_7rliy")
@@ -198,6 +203,14 @@ texture = SubResource("GradientTexture2D_pw0am")
 modulate = Color(1, 1, 1, 0.313726)
 show_behind_parent = true
 texture = SubResource("GradientTexture2D_nkq71")
+
+[node name="AllertSprite" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(1, 1, 1, 0.313726)
+show_behind_parent = true
+material = SubResource("ShaderMaterial_8p5yl")
+position = Vector2(0, -31)
+texture = ExtResource("5_ce7xg")
 
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="frame_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_frame_changed"]

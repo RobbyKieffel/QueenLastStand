@@ -1,8 +1,9 @@
-[gd_scene load_steps=39 format=3 uid="uid://cqt5dwmcyl4ie"]
+[gd_scene load_steps=26 format=3 uid="uid://cqt5dwmcyl4ie"]
 
 [ext_resource type="Script" path="res://Script/UI/hud.gd" id="1_iti3u"]
 [ext_resource type="Texture2D" uid="uid://dkget8w2eplws" path="res://Assets/Coin/gold/golden.rotate.png" id="1_shh6m"]
-[ext_resource type="Texture2D" uid="uid://ygyxvar8l4eg" path="res://Assets/Coin/copper/copper.blink.png" id="3_ngf1d"]
+[ext_resource type="Shader" path="res://Script/Shader/SpiteOutline.gdshader" id="3_gld8o"]
+[ext_resource type="Texture2D" uid="uid://by5inp6x1dcra" path="res://Assets/Emojis_16x16_Free/Emojis_Free1.png" id="4_akxgs"]
 
 [sub_resource type="Gradient" id="Gradient_nq4yn"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
@@ -117,111 +118,9 @@ animations = [{
 "speed": 25.0
 }]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_plo2e"]
-atlas = ExtResource("3_ngf1d")
-region = Rect2(0, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_5pt6f"]
-atlas = ExtResource("3_ngf1d")
-region = Rect2(32, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_p58dl"]
-atlas = ExtResource("3_ngf1d")
-region = Rect2(64, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_twkvc"]
-atlas = ExtResource("3_ngf1d")
-region = Rect2(96, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_fsudo"]
-atlas = ExtResource("3_ngf1d")
-region = Rect2(128, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_4isuo"]
-atlas = ExtResource("3_ngf1d")
-region = Rect2(160, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vio4b"]
-atlas = ExtResource("3_ngf1d")
-region = Rect2(192, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_vthbc"]
-atlas = ExtResource("3_ngf1d")
-region = Rect2(224, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_ua2vu"]
-atlas = ExtResource("3_ngf1d")
-region = Rect2(256, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_spwfl"]
-atlas = ExtResource("3_ngf1d")
-region = Rect2(288, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_olvia"]
-atlas = ExtResource("3_ngf1d")
-region = Rect2(320, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_5dc8t"]
-atlas = ExtResource("3_ngf1d")
-region = Rect2(352, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_f6oua"]
-atlas = ExtResource("3_ngf1d")
-region = Rect2(384, 0, 32, 32)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_1ndi1"]
-atlas = ExtResource("3_ngf1d")
-region = Rect2(416, 0, 32, 32)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_ufrim"]
-animations = [{
-"frames": [{
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_plo2e")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_5pt6f")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_p58dl")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_twkvc")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_fsudo")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_4isuo")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_vio4b")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_vthbc")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_ua2vu")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_spwfl")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_olvia")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_5dc8t")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_f6oua")
-}, {
-"duration": 1.0,
-"texture": SubResource("AtlasTexture_1ndi1")
-}],
-"loop": true,
-"name": &"default",
-"speed": 10.0
-}]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_58w6o"]
+shader = ExtResource("3_gld8o")
+shader_parameter/outline_color = null
 
 [sub_resource type="Animation" id="Animation_gr0yl"]
 resource_name = "Flash"
@@ -309,12 +208,11 @@ offset_top = 28.0
 offset_right = 25.0
 offset_bottom = 28.0
 
-[node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="HealtContainer"]
+[node name="AnimatedSprite2D" type="Sprite2D" parent="HealtContainer"]
+material = SubResource("ShaderMaterial_58w6o")
 position = Vector2(0, 43)
 scale = Vector2(1.5, 1.5)
-sprite_frames = SubResource("SpriteFrames_ufrim")
-autoplay = "default"
-frame_progress = 0.135516
+texture = ExtResource("4_akxgs")
 
 [node name="HealtLabel" type="Label" parent="HealtContainer"]
 layout_mode = 1
@@ -328,6 +226,7 @@ offset_bottom = 54.5
 grow_vertical = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 3
+text = "0"
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {

@@ -3,8 +3,9 @@ extends CharacterBody2D
 
 @onready var demage_area = $DemageArea
 @onready var animated_sprite_2d = $AnimatedSprite2D
+@onready var allert_sprite: Sprite2D = $AllertSprite
 
-const SPEED = 300.0
+const SPEED = 150.0
 #const JUMP_VELOCITY = -400.0
 var a = []
 var player:Node2D
@@ -25,6 +26,7 @@ func _physics_process(delta):
 	else:
 		chase = false
 		$AnimatedSprite2D.play("Attack")
+		allert_sprite.show()
 		velocity = Vector2.ZERO
 	
 	if dir.x < 0 : $AnimatedSprite2D.flip_h = true
@@ -38,6 +40,7 @@ func _on_animated_sprite_2d_animation_finished():
 	if $AnimatedSprite2D.animation == "Attack":
 		$AnimatedSprite2D.play("Idle")
 		chase = true
+		allert_sprite.hide()
 	pass # Replace with function body.
 
 
