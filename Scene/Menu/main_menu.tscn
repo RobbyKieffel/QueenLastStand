@@ -14,11 +14,12 @@ gradient = SubResource("Gradient_nb62b")
 width = 256
 height = 51
 fill = 1
-fill_from = Vector2(0.472, 0.501961)
-fill_to = Vector2(0.799145, 0.213675)
+fill_from = Vector2(0.504, 0.542118)
+fill_to = Vector2(0.54, 0.301176)
 
 [sub_resource type="Animation" id="Animation_hdtd4"]
 resource_name = "Fade"
+step = 0.1
 tracks/0/type = "value"
 tracks/0/imported = false
 tracks/0/enabled = true
@@ -38,9 +39,12 @@ tracks/1/path = NodePath(".")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
-"times": PackedFloat32Array(1.03333),
-"transitions": PackedFloat32Array(1),
+"times": PackedFloat32Array(0.9, 1),
+"transitions": PackedFloat32Array(1, 1),
 "values": [{
+"args": [],
+"method": &"set_player_ready"
+}, {
 "args": [],
 "method": &"hide"
 }]
@@ -77,6 +81,7 @@ grow_vertical = 2
 script = ExtResource("1_y6u0w")
 
 [node name="TextureRect" type="TextureRect" parent="."]
+self_modulate = Color(1, 1, 1, 0.341176)
 layout_mode = 1
 anchors_preset = 12
 anchor_top = 1.0
@@ -98,7 +103,7 @@ theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 2
 theme_override_fonts/font = ExtResource("1_85ri1")
 theme_override_font_sizes/font_size = 18
-text = "press any button to play"
+text = "press any key"
 horizontal_alignment = 1
 vertical_alignment = 1
 

@@ -3,9 +3,14 @@ extends Node2D
 var random = RandomNumberGenerator.new()
 @onready var hud: HUD = $CanvasLayer/HUD
 
+var camera:CameraTarget
+var player:Node2D
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	random.randomize()
+	player = get_tree().get_nodes_in_group("player")[0]
+	camera = get_tree().get_nodes_in_group("Camera")[0]
+	camera.target = player
 	pass # Replace with function body.
 
 
