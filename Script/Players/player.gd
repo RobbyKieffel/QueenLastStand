@@ -1,67 +1,104 @@
 extends CharacterBody2D
 
 
-const SPEED = 200.0
-const JUMP_VELOCITY = -400.0
+const SPEED = 200.0 #kecepatan pergerakan player
+const JUMP_VELOCITY = -400.0 #kekuatan lompatan player
 
-var hud:HUD
+var hud:HUD #variabel yang akan menyimpan scene node HUD dengan class HUD
 
-# Get the gravity from the project settings to be synced with RigidBody nodes.
-var gravity = 1000
+var attack_count:int = 1
 
-var healt := 5
+var gravity = 1000 #kekuatan gravitasi
+var healt := 5 #menyimpan jumlah healt yang dimiliki player
+var coin := 0 #menimpan jumlah koin yg didapat player
+var attack_demage := 2 #demage dari player
 
+@onready var player_srite: AnimatedSprite2D = $AnimatedSprite2D
+@onready var hurt_particle: GPUParticles2D = $HurtParticle
+@onready var demage_area: Area2D = $AnimatedSprite2D/DemageArea
+@onready var animation_player: AnimationPlayer = $AnimationPlayer
+
+var ready_to_move = false
 
 func _ready():
-	hud = get_tree().get_nodes_in_group("HUD")[0]
-	hud.call_deferred("set_healt_value", healt)
-	print(healt)
+	hud = get_tree().get_nodes_in_group("HUD")[0] #Mengambil scene HUD yang ada dari menggunakan grub HUD
+	hud.call_deferred("set_healt_value", healt) #Mengatur tampilan healt pada HUD sesuai dengan nilai pada variabel Healt
 	pass
 
 
 func _physics_process(delta):
-	# Add the gravity.
-	var direction = Input.get_axis("left_p1", "right_p1")
-	if direction:
-		if direction > 0: $AnimatedSprite2D.flip_h = false
-		elif direction < 0: $AnimatedSprite2D.flip_h = true
-		velocity.x = direction * SPEED
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+	var direction
+	if ready_to_move: direction = Input.get_axis("left_p1", "right_p1") #mengambil nilai dari hasil input player
 	
-	if not is_on_floor():
-		velocity.y += gravity * delta
-	else:
-		if direction: $AnimatedSprite2D.play("Movement")
-		else:$AnimatedSprite2D.play("Idle")
-		# Get the input direction and handle the movement/deceleration.
-		# As good practice, you should replace UI actions with custom gameplay actions.
+	if Input.is_action_just_pressed("attack_p1") and ready_to_move:
+		animation_player.play("Attack1")
+	
+	if not player_srite.animation == "Attack1":
+		if direction: #mengecek apakah player memberikan input untuk bergerak
+			if direction != 0 : player_srite.scale.x = int(direction)
+			#if direction > 0: player_srite.flip_h = false #mengatur arah sprite sesuai dengan hasil input player
+			#elif direction < 0: player_srite.flip_h = true
+			velocity.x = direction * SPEED #membuat player bergerak sesuai dengan arah yang di-input
+		else:
+			velocity.x = move_toward(velocity.x, 0, 15) #Menghentikan pergerakn player secara perlahan
 		
-		# Handle jump.
-		if Input.is_action_just_pressed("jump_p1"):
-			$AnimatedSprite2D.play("Jump")
-			velocity.y = JUMP_VELOCITY
+		if not is_on_floor(): #mengecek apakah sedang tidak berada di lantai
+			velocity.y += gravity * delta #memberikan gravitasi kepada player
+			if not player_srite.animation == "Jump": player_srite.play("Fall") #memainkan animasi fall saat terjatuh
+		else:
+			if direction: player_srite.play("Move") #Memberikan animasi bergerak saat player  memberikan input untuk bergerak
+			else:player_srite.play("Idle") #Memberikan animasi Idle saat tidak ada input untuk bergerak
+			
+			# Handle jump.
+			if Input.is_action_just_pressed("jump_p1"): #mengecek input lompat dari player
+				player_srite.play("Jump") #Memainkan animasi melompat
+				velocity.y = JUMP_VELOCITY #Memberikan dorogan ke pada player untuk melompat
+	
+	move_and_slide() #membuat player bergerak sesuai dengan perhutungan physycs
 
-	move_and_slide()
+
+func hurt(): #Function untuk membuat player terluka
+	hurt_particle.emitting = true #memancarkan partikel darah saat terluka
+	healt -= 1 #mengurangi healt player
+	hud.set_healt_value(healt) #memanggil method set_healt_value pada scene HUD
+	if healt <= 0: get_tree().reload_current_scene() #Mengulang kembali scene saat healt player sudah habis
 
 
-func hurt():
-	$GPUParticles2D.emitting = true
-	healt -= 1
-	print("Healt = ", healt)
-	if healt <= 0:
-		get_tree().reload_current_scene()
+func deals_demage():
+	for i in demage_area.get_overlapping_bodies():
+		i.hurt(attack_demage)
 
 
-func collet_coin():
-	hud.increase_coin()
+func collet_coin(): #finction untuk menambahkan koin
+	coin += 1 #menambahkan coin
+	hud.set_coin_value(coin) #memanggil method set_coin_value pada scene HUD
 	pass
 
 
-func _on_animated_sprite_2d_animation_finished():
-	if $AnimatedSprite2D.animation == "Jump":
-		if not is_on_floor():
-			$AnimatedSprite2D.play("Fall")
-		else:
-			$AnimatedSprite2D.play("Idle")
-	pass # Replace with function body.
+func set_attack_count(value:int):
+	attack_count = value
+
+
+func _on_animated_sprite_2d_animation_finished(): #function untuk menerima signal dari node animated_sprite_2d setiap kali animasi selesai
+	if player_srite.animation == "Jump": player_srite.play("Fall") #memainkan animasi fall setelah selesai memainkan animasi Jump
+	if player_srite.animation == "Attack1":
+		await get_tree().create_timer(0.05, false).timeout
+		if Input.is_action_just_pressed("attack_p1") : animation_player.play("Attack2")
+		else : 
+			attack_count = 0
+			player_srite.play("Idle")
+	if player_srite.animation == "Attack2":
+		attack_count += 1
+		await get_tree().create_timer(0.05, false).timeout
+		if Input.is_action_just_pressed("attack_p1") : animation_player.play("Attack3")
+		else :
+			attack_count = 1
+			player_srite.play("Idle")
+	if player_srite.animation == "Attack3":
+		await get_tree().create_timer(0.05, false).timeout
+		attack_count = 1
+		player_srite.play("Idle")
+	pass
+
+func set_ready_to_move(value:bool):
+	ready_to_move = value

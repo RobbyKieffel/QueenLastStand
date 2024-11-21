@@ -1,9 +1,20 @@
-[gd_scene load_steps=26 format=3 uid="uid://cqt5dwmcyl4ie"]
+[gd_scene load_steps=31 format=3 uid="uid://cqt5dwmcyl4ie"]
 
 [ext_resource type="Script" path="res://Script/UI/hud.gd" id="1_iti3u"]
 [ext_resource type="Texture2D" uid="uid://dkget8w2eplws" path="res://Assets/Coin/gold/golden.rotate.png" id="1_shh6m"]
 [ext_resource type="Shader" path="res://Script/Shader/SpiteOutline.gdshader" id="3_gld8o"]
 [ext_resource type="Texture2D" uid="uid://by5inp6x1dcra" path="res://Assets/Emojis_16x16_Free/Emojis_Free1.png" id="4_akxgs"]
+
+[sub_resource type="Gradient" id="Gradient_3q72w"]
+offsets = PackedFloat32Array(0.198925, 0.629032, 1)
+colors = PackedColorArray(3.18866e-07, 0.129536, 0.183041, 0, 0.0214577, 0.150961, 0.211338, 0.181208, 0.0085887, 0.125592, 0.195012, 0.698039)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_p10in"]
+gradient = SubResource("Gradient_3q72w")
+width = 256
+height = 256
+fill = 1
+fill_from = Vector2(0.491453, 0.491453)
 
 [sub_resource type="Gradient" id="Gradient_nq4yn"]
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 1)
@@ -159,12 +170,88 @@ _data = {
 "RESET": SubResource("Animation_of4tw")
 }
 
-[node name="HUD" type="CanvasLayer" groups=["HUD"]]
+[sub_resource type="Animation" id="Animation_7htyq"]
+resource_name = "ShowHUD"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CoinContainer:position")
+tracks/0/interp = 2
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-32, 28), Vector2(33, 28)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HealtContainer:position")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Vector2(-32, 70), Vector2(33, 70)]
+}
+
+[sub_resource type="Animation" id="Animation_50i6j"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("CoinContainer:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-32, 28)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("HealtContainer:position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(-32, 70)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_6ps2x"]
+_data = {
+"RESET": SubResource("Animation_50i6j"),
+"ShowHUD": SubResource("Animation_7htyq")
+}
+
+[node name="HUD" type="Control" groups=["HUD"]]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 script = ExtResource("1_iti3u")
+
+[node name="VingetEffect" type="TextureRect" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("GradientTexture2D_p10in")
 
 [node name="FrashEffect" type="TextureRect" parent="."]
 visible = false
 modulate = Color(1, 1, 1, 0.705882)
+layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -175,9 +262,9 @@ texture = SubResource("GradientTexture2D_4gne7")
 [node name="CoinContainer" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 25.0
+offset_left = -32.0
 offset_top = 28.0
-offset_right = 25.0
+offset_right = -32.0
 offset_bottom = 28.0
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="CoinContainer"]
@@ -203,14 +290,13 @@ text = "0"
 [node name="HealtContainer" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_left = 25.0
-offset_top = 28.0
-offset_right = 25.0
-offset_bottom = 28.0
+offset_left = -32.0
+offset_top = 70.0
+offset_right = -32.0
+offset_bottom = 70.0
 
 [node name="AnimatedSprite2D" type="Sprite2D" parent="HealtContainer"]
 material = SubResource("ShaderMaterial_58w6o")
-position = Vector2(0, 43)
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("4_akxgs")
 
@@ -220,9 +306,9 @@ anchors_preset = 4
 anchor_top = 0.5
 anchor_bottom = 0.5
 offset_left = 16.0
-offset_top = 31.5
+offset_top = -11.5
 offset_right = 56.0
-offset_bottom = 54.5
+offset_bottom = 11.5
 grow_vertical = 2
 theme_override_colors/font_outline_color = Color(0, 0, 0, 1)
 theme_override_constants/outline_size = 3
@@ -231,4 +317,9 @@ text = "0"
 [node name="AnimationPlayer" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_05ogk")
+}
+
+[node name="AnimationPlayer2" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_6ps2x")
 }

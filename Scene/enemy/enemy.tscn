@@ -1,4 +1,4 @@
-[gd_scene load_steps=31 format=3 uid="uid://vjgitkpi38qs"]
+[gd_scene load_steps=33 format=3 uid="uid://vjgitkpi38qs"]
 
 [ext_resource type="Script" path="res://Script/Enemys/enemy.gd" id="1_7rliy"]
 [ext_resource type="Texture2D" uid="uid://nvmw4mvl4dq1" path="res://Assets/Character/attacking.png" id="1_85nk0"]
@@ -177,8 +177,17 @@ metadata/_snap_enabled = true
 shader = ExtResource("2_dxnwx")
 shader_parameter/outline_color = null
 
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ewwuc"]
+radius = 12.0
+height = 54.0
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_dnvh5"]
+radius = 189.024
+
 [node name="Enemy" type="CharacterBody2D"]
 z_index = 1
+collision_layer = 2
+collision_mask = 0
 script = ExtResource("1_7rliy")
 
 [node name="AnimatedSprite2D" type="AnimatedSprite2D" parent="."]
@@ -212,5 +221,17 @@ material = SubResource("ShaderMaterial_8p5yl")
 position = Vector2(0, -31)
 texture = ExtResource("5_ce7xg")
 
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4)
+shape = SubResource("CapsuleShape2D_ewwuc")
+
+[node name="PlayerDetector" type="Area2D" parent="."]
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerDetector"]
+shape = SubResource("CircleShape2D_dnvh5")
+
 [connection signal="animation_finished" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_animation_finished"]
 [connection signal="frame_changed" from="AnimatedSprite2D" to="." method="_on_animated_sprite_2d_frame_changed"]
+[connection signal="body_entered" from="PlayerDetector" to="." method="_on_player_detector_body_entered"]
+[connection signal="body_exited" from="PlayerDetector" to="." method="_on_player_detector_body_exited"]

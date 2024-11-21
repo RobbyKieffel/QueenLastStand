@@ -1,6 +1,7 @@
 extends Node2D
 
 var random = RandomNumberGenerator.new()
+@onready var hud: HUD = $CanvasLayer/HUD
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -19,7 +20,7 @@ func _process(delta):
 
 
 func _on_flash_timer_timeout():
-	$HUD.flash()
+	hud.flash()
 	$FlashTimer.start(randf_range(8.0, 15.0))
 	pass # Replace with function body.
 
