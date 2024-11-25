@@ -2,6 +2,9 @@ shader_type canvas_item;
 
 uniform vec4 outline_color : source_color;
 
+uniform bool active;
+uniform vec3 flash_color : source_color = vec3(1.0);
+
 void fragment(){
 	float size_x = 1.0/float(textureSize(TEXTURE, 0).x);
 	float size_y = 1.0/float(textureSize(TEXTURE, 0).y);
@@ -19,4 +22,8 @@ void fragment(){
 	alpha += texture(TEXTURE, UV + vec2(size_x, -size_y)).a;*/
 	vec4 final_color = mix(sprite_color, outline_color, clamp(alpha, 0.0, 1.0));
 	COLOR = vec4(final_color.rgb, clamp(abs(alpha) + sprite_color.a, 0.0, 1.0));
+	vec4 t = texture(TEXTURE, UV);
+	if (active == true) {
+		COLOR = vec4(flash_color, t.a);
+	}
 }

@@ -9,6 +9,8 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_4e6io"]
 shader = ExtResource("2_dxnwx")
 shader_parameter/outline_color = null
+shader_parameter/active = false
+shader_parameter/flash_color = Color(1, 1, 1, 1)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_bmjt2"]
 atlas = ExtResource("1_85nk0")
@@ -176,6 +178,8 @@ metadata/_snap_enabled = true
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_8p5yl"]
 shader = ExtResource("2_dxnwx")
 shader_parameter/outline_color = null
+shader_parameter/active = null
+shader_parameter/flash_color = Color(1, 1, 1, 1)
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ewwuc"]
 radius = 12.0

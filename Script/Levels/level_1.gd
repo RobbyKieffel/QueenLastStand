@@ -1,35 +1,25 @@
 extends Node2D
 
-var random = RandomNumberGenerator.new()
 @onready var hud: HUD = $CanvasLayer/HUD
+@onready var camera_target: CameraTarget = $CameraTarget
+@onready var player = $Player
 
-var camera:CameraTarget
-var player:Node2D
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	random.randomize()
-	player = get_tree().get_nodes_in_group("player")[0]
-	camera = get_tree().get_nodes_in_group("Camera")[0]
-	camera.target = player
-	pass # Replace with function body.
-
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	#print($TileMap.local_to_map(get_global_mouse_position()))
-	#if Input.is_action_just_pressed("mouseClick"):
-		#$TileMap.set_cell(0,$TileMap.local_to_map(get_local_mouse_position()), 0,
-		#Vector2i(2,1), )
-	#print($TileMap.get_cell_source_id(0, $TileMap.local_to_map(get_local_mouse_position())))
+	camera_target.target = $BlueFire #membuat kamera akan menargetkan node $BlueFire
 	pass
 
 
-func _on_flash_timer_timeout():
-	hud.flash()
-	$FlashTimer.start(randf_range(8.0, 15.0))
+func _on_flash_timer_timeout(): #signal untuk timer yang akan mengatur waktu petir muncul
+	hud.flash() #panggil method flash() pada scene HUD
+	$FlashTimer.start(randf_range(8.0, 15.0)) #mulai lagi timernya dengan waktu yang antara 8 sampai 15 detik
 	pass # Replace with function body.
 
 
 func _on_dead_zone_body_entered(body):
-	get_tree().reload_current_scene()
+	get_tree().reload_current_scene() #saat menyentuh ari atau rawah maka ulang kembali scenenya
 	pass # Replace with function body.
+
+
+func blue_fire_on(): #function untuk memmunculkan node $BlueFire
+	$BlueFire.show()

@@ -132,6 +132,8 @@ animations = [{
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_58w6o"]
 shader = ExtResource("3_gld8o")
 shader_parameter/outline_color = null
+shader_parameter/active = null
+shader_parameter/flash_color = Color(1, 1, 1, 1)
 
 [sub_resource type="Animation" id="Animation_gr0yl"]
 resource_name = "Flash"

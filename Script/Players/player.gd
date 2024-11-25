@@ -6,8 +6,6 @@ const JUMP_VELOCITY = -400.0 #kekuatan lompatan player
 
 var hud:HUD #variabel yang akan menyimpan scene node HUD dengan class HUD
 
-var attack_count:int = 1
-
 var gravity = 1000 #kekuatan gravitasi
 var healt := 5 #menyimpan jumlah healt yang dimiliki player
 var coin := 0 #menimpan jumlah koin yg didapat player
@@ -32,6 +30,7 @@ func _physics_process(delta):
 	
 	if Input.is_action_just_pressed("attack_p1") and ready_to_move:
 		animation_player.play("Attack1")
+		direction = Vector2.ZERO
 	
 	if not player_srite.animation == "Attack1":
 		if direction: #mengecek apakah player memberikan input untuk bergerak
@@ -40,7 +39,7 @@ func _physics_process(delta):
 			#elif direction < 0: player_srite.flip_h = true
 			velocity.x = direction * SPEED #membuat player bergerak sesuai dengan arah yang di-input
 		else:
-			velocity.x = move_toward(velocity.x, 0, 15) #Menghentikan pergerakn player secara perlahan
+			velocity.x = 0 #Menghentikan pergerakn player secara perlahan
 		
 		if not is_on_floor(): #mengecek apakah sedang tidak berada di lantai
 			velocity.y += gravity * delta #memberikan gravitasi kepada player
@@ -60,6 +59,9 @@ func _physics_process(delta):
 func hurt(): #Function untuk membuat player terluka
 	hurt_particle.emitting = true #memancarkan partikel darah saat terluka
 	healt -= 1 #mengurangi healt player
+	player_srite.material.set("shader_parameter/active", true) #mengubah warna sprite menjadi putuh
+	await get_tree().create_timer(0.2).timeout #memberi jeda selama 0.2 detik
+	player_srite.material.set("shader_parameter/active", false) #mengembalikan warna sprite
 	hud.set_healt_value(healt) #memanggil method set_healt_value pada scene HUD
 	if healt <= 0: get_tree().reload_current_scene() #Mengulang kembali scene saat healt player sudah habis
 
@@ -75,30 +77,11 @@ func collet_coin(): #finction untuk menambahkan koin
 	pass
 
 
-func set_attack_count(value:int):
-	attack_count = value
-
-
 func _on_animated_sprite_2d_animation_finished(): #function untuk menerima signal dari node animated_sprite_2d setiap kali animasi selesai
 	if player_srite.animation == "Jump": player_srite.play("Fall") #memainkan animasi fall setelah selesai memainkan animasi Jump
-	if player_srite.animation == "Attack1":
-		await get_tree().create_timer(0.05, false).timeout
-		if Input.is_action_just_pressed("attack_p1") : animation_player.play("Attack2")
-		else : 
-			attack_count = 0
-			player_srite.play("Idle")
-	if player_srite.animation == "Attack2":
-		attack_count += 1
-		await get_tree().create_timer(0.05, false).timeout
-		if Input.is_action_just_pressed("attack_p1") : animation_player.play("Attack3")
-		else :
-			attack_count = 1
-			player_srite.play("Idle")
-	if player_srite.animation == "Attack3":
-		await get_tree().create_timer(0.05, false).timeout
-		attack_count = 1
+	if player_srite.animation == "Attack1": #saat animasi attack selesai maka mainkan animasi idle
 		player_srite.play("Idle")
 	pass
 
-func set_ready_to_move(value:bool):
+func set_ready_to_move(value:bool): #mengatur variabel ready_to_move sebagai pertanda bawah player sudah bisa digerakan
 	ready_to_move = value

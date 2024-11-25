@@ -14,6 +14,8 @@
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_2thew"]
 shader = ExtResource("2_q3yks")
 shader_parameter/outline_color = null
+shader_parameter/active = null
+shader_parameter/flash_color = Color(1, 1, 1, 1)
 
 [sub_resource type="SpriteFrames" id="SpriteFrames_wt3e4"]
 animations = [{
